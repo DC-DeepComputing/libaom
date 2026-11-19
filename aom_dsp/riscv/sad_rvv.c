@@ -103,3 +103,132 @@ SAD_RVV(64, 64)
 SAD_RVV(64, 128)
 SAD_RVV(128, 64)
 SAD_RVV(128, 128)
+
+/* ---------------- skip / multi-reference SAD wrappers ----------------- */
+
+#define SAD_SKIP_RVV(W, H)                                                   \
+  uint32_t aom_sad_skip_##W##x##H##_rvv(const uint8_t *src, int src_stride,  \
+                                        const uint8_t *ref,                 \
+                                        int ref_stride) {                   \
+    unsigned r = ((W) <= 16)                                                \
+                     ? sad_rvv_small(src, 2 * src_stride, ref,              \
+                                     2 * ref_stride, (W), (H) / 2)          \
+                     : sad_rvv_big(src, 2 * src_stride, ref,                \
+                                   2 * ref_stride, (W), (H) / 2);           \
+    return 2 * r;                                                            \
+  }
+
+#define SAD4D_RVV(W, H)                                                      \
+  void aom_sad##W##x##H##x4d_rvv(const uint8_t *src, int src_stride,         \
+                                 const uint8_t *const ref_array[4],          \
+                                 int ref_stride, uint32_t sad_array[4]) {    \
+    int i;                                                                   \
+    for (i = 0; i < 4; ++i) {                                                \
+      sad_array[i] =                                                         \
+          aom_sad##W##x##H##_rvv(src, src_stride, ref_array[i], ref_stride); \
+    }                                                                        \
+  }
+
+#define SAD3D_RVV(W, H)                                                      \
+  void aom_sad##W##x##H##x3d_rvv(const uint8_t *src, int src_stride,         \
+                                 const uint8_t *const ref_array[4],          \
+                                 int ref_stride, uint32_t sad_array[4]) {    \
+    int i;                                                                   \
+    for (i = 0; i < 3; ++i) {                                                \
+      sad_array[i] =                                                         \
+          aom_sad##W##x##H##_rvv(src, src_stride, ref_array[i], ref_stride); \
+    }                                                                        \
+  }
+
+#define SAD_SKIP4D_RVV(W, H)                                                 \
+  void aom_sad_skip_##W##x##H##x4d_rvv(                                      \
+      const uint8_t *src, int src_stride,                                    \
+      const uint8_t *const ref_array[4], int ref_stride,                     \
+      uint32_t sad_array[4]) {                                               \
+    int i;                                                                   \
+    for (i = 0; i < 4; ++i) {                                                \
+      sad_array[i] =                                                         \
+          aom_sad_skip_##W##x##H##_rvv(src, src_stride, ref_array[i],        \
+                                       ref_stride);                          \
+    }                                                                        \
+  }
+
+SAD_SKIP_RVV(4, 16)
+SAD_SKIP_RVV(8, 16)
+SAD_SKIP_RVV(8, 32)
+SAD_SKIP_RVV(16, 8)
+SAD_SKIP_RVV(16, 16)
+SAD_SKIP_RVV(16, 32)
+SAD_SKIP_RVV(16, 64)
+SAD_SKIP_RVV(32, 16)
+SAD_SKIP_RVV(32, 32)
+SAD_SKIP_RVV(32, 64)
+SAD_SKIP_RVV(64, 16)
+SAD_SKIP_RVV(64, 32)
+SAD_SKIP_RVV(64, 64)
+SAD_SKIP_RVV(64, 128)
+SAD_SKIP_RVV(128, 64)
+SAD_SKIP_RVV(128, 128)
+
+SAD4D_RVV(4, 4)
+SAD4D_RVV(4, 8)
+SAD4D_RVV(4, 16)
+SAD4D_RVV(8, 4)
+SAD4D_RVV(8, 8)
+SAD4D_RVV(8, 16)
+SAD4D_RVV(8, 32)
+SAD4D_RVV(16, 4)
+SAD4D_RVV(16, 8)
+SAD4D_RVV(16, 16)
+SAD4D_RVV(16, 32)
+SAD4D_RVV(16, 64)
+SAD4D_RVV(32, 8)
+SAD4D_RVV(32, 16)
+SAD4D_RVV(32, 32)
+SAD4D_RVV(32, 64)
+SAD4D_RVV(64, 16)
+SAD4D_RVV(64, 32)
+SAD4D_RVV(64, 64)
+SAD4D_RVV(64, 128)
+SAD4D_RVV(128, 64)
+SAD4D_RVV(128, 128)
+
+SAD3D_RVV(4, 4)
+SAD3D_RVV(4, 8)
+SAD3D_RVV(4, 16)
+SAD3D_RVV(8, 4)
+SAD3D_RVV(8, 8)
+SAD3D_RVV(8, 16)
+SAD3D_RVV(8, 32)
+SAD3D_RVV(16, 4)
+SAD3D_RVV(16, 8)
+SAD3D_RVV(16, 16)
+SAD3D_RVV(16, 32)
+SAD3D_RVV(16, 64)
+SAD3D_RVV(32, 8)
+SAD3D_RVV(32, 16)
+SAD3D_RVV(32, 32)
+SAD3D_RVV(32, 64)
+SAD3D_RVV(64, 16)
+SAD3D_RVV(64, 32)
+SAD3D_RVV(64, 64)
+SAD3D_RVV(64, 128)
+SAD3D_RVV(128, 64)
+SAD3D_RVV(128, 128)
+
+SAD_SKIP4D_RVV(4, 16)
+SAD_SKIP4D_RVV(8, 16)
+SAD_SKIP4D_RVV(8, 32)
+SAD_SKIP4D_RVV(16, 8)
+SAD_SKIP4D_RVV(16, 16)
+SAD_SKIP4D_RVV(16, 32)
+SAD_SKIP4D_RVV(16, 64)
+SAD_SKIP4D_RVV(32, 16)
+SAD_SKIP4D_RVV(32, 32)
+SAD_SKIP4D_RVV(32, 64)
+SAD_SKIP4D_RVV(64, 16)
+SAD_SKIP4D_RVV(64, 32)
+SAD_SKIP4D_RVV(64, 64)
+SAD_SKIP4D_RVV(64, 128)
+SAD_SKIP4D_RVV(128, 64)
+SAD_SKIP4D_RVV(128, 128)
