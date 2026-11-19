@@ -222,7 +222,11 @@ if(CONFIG_AV1_ENCODER)
     list(APPEND AOM_DSP_ENCODER_INTRIN_NEON
                 "${AOM_ROOT}/aom_dsp/flow_estimation/arm/disflow_neon.c")
 
-    list(APPEND AOM_DSP_ENCODER_INTRIN_SVE
+    list(APPEND AOM_DSP_ENCODER_INTRIN_RVV
+            "${AOM_ROOT}/aom_dsp/riscv/sad_rvv.c"
+            "${AOM_ROOT}/aom_dsp/riscv/variance_rvv.c")
+
+list(APPEND AOM_DSP_ENCODER_INTRIN_SVE
                 "${AOM_ROOT}/aom_dsp/flow_estimation/arm/disflow_sve.c")
   endif()
 
@@ -559,6 +563,13 @@ function(setup_aom_dsp_targets)
     if(CONFIG_AV1_ENCODER)
       add_intrinsics_object_library("${AOM_SVE_FLAG}" "sve" "aom_dsp_encoder"
                                     "AOM_DSP_ENCODER_INTRIN_SVE")
+    endif()
+  endif()
+
+  if(HAVE_RVV)
+    if(CONFIG_AV1_ENCODER)
+      add_intrinsics_object_library("-march=rv64gcv" "rvv" "aom_dsp_encoder"
+                                    "AOM_DSP_ENCODER_INTRIN_RVV")
     endif()
   endif()
 

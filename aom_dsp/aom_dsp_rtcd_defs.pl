@@ -880,46 +880,46 @@ if (aom_config("CONFIG_AV1_ENCODER") eq "yes") {
 
   add_proto qw/uint64_t aom_sum_sse_2d_i16/, "const int16_t *src, int src_stride, int width, int height, int *sum";
   specialize qw/aom_sum_sse_2d_i16 avx2 neon sse2 sve/;
-  specialize qw/aom_sad128x128    avx2 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad128x64     avx2 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad64x128     avx2 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad64x64      avx2 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad64x32      avx2 neon neon_dotprod/, "$sse2_asm";
+  specialize qw/aom_sad128x128    avx2 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad128x64     avx2 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad64x128     avx2 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad64x64      avx2 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad64x32      avx2 neon neon_dotprod rvv/, "$sse2_asm";
 
   if(aom_config("CONFIG_HIGHWAY") eq "yes") {
-    specialize qw/aom_sad128x128    avx512/;
-    specialize qw/aom_sad128x64     avx512/;
-    specialize qw/aom_sad64x128     avx512/;
-    specialize qw/aom_sad64x64      avx512/;
-    specialize qw/aom_sad64x32      avx512/;
-    specialize qw/aom_sad64x16      avx512/;
-    specialize qw/aom_sad32x32      avx512/;
-    specialize qw/aom_sad32x16      avx512/;
-    specialize qw/aom_sad32x8       avx512/;
-    specialize qw/aom_sad16x64      avx512/;
-    specialize qw/aom_sad16x32      avx512/;
-    specialize qw/aom_sad16x16      avx512/;
-    specialize qw/aom_sad16x8       avx512/;
+    specialize qw/aom_sad128x128    avx512 rvv/;
+    specialize qw/aom_sad128x64     avx512 rvv/;
+    specialize qw/aom_sad64x128     avx512 rvv/;
+    specialize qw/aom_sad64x64      avx512 rvv/;
+    specialize qw/aom_sad64x32      avx512 rvv/;
+    specialize qw/aom_sad64x16      avx512 rvv/;
+    specialize qw/aom_sad32x32      avx512 rvv/;
+    specialize qw/aom_sad32x16      avx512 rvv/;
+    specialize qw/aom_sad32x8       avx512 rvv/;
+    specialize qw/aom_sad16x64      avx512 rvv/;
+    specialize qw/aom_sad16x32      avx512 rvv/;
+    specialize qw/aom_sad16x16      avx512 rvv/;
+    specialize qw/aom_sad16x8       avx512 rvv/;
   }
 
-  specialize qw/aom_sad32x64      avx2 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad32x32      avx2 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad32x16      avx2 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad16x32 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad16x16 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad16x8 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad8x16 neon/, "$sse2_asm";
-  specialize qw/aom_sad8x8 neon/, "$sse2_asm";
+  specialize qw/aom_sad32x64      avx2 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad32x32      avx2 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad32x16      avx2 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad16x32 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad16x16 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad16x8 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad8x16 neon rvv/, "$sse2_asm";
+  specialize qw/aom_sad8x8 neon rvv/, "$sse2_asm";
   specialize qw/aom_sad8x4 neon/, "$sse2_asm";
   specialize qw/aom_sad4x8 neon/, "$sse2_asm";
   specialize qw/aom_sad4x4 neon/, "$sse2_asm";
 
   specialize qw/aom_sad4x16 neon/, "$sse2_asm";
-  specialize qw/aom_sad16x4 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad8x32 neon/, "$sse2_asm";
-  specialize qw/aom_sad32x8 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad16x64 neon neon_dotprod/, "$sse2_asm";
-  specialize qw/aom_sad64x16 neon neon_dotprod/, "$sse2_asm";
+  specialize qw/aom_sad16x4 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad8x32 neon rvv/, "$sse2_asm";
+  specialize qw/aom_sad32x8 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad16x64 neon neon_dotprod rvv/, "$sse2_asm";
+  specialize qw/aom_sad64x16 neon neon_dotprod rvv/, "$sse2_asm";
 
   specialize qw/aom_sad_skip_128x128    avx2 neon neon_dotprod/, "$sse2_asm";
   specialize qw/aom_sad_skip_128x64     avx2 neon neon_dotprod/, "$sse2_asm";
@@ -1509,16 +1509,16 @@ if (aom_config("CONFIG_AV1_ENCODER") eq "yes") {
     add_proto qw/uint32_t/, "aom_sub_pixel_variance${w}x${h}", "const uint8_t *src_ptr, int source_stride, int xoffset, int  yoffset, const uint8_t *ref_ptr, int ref_stride, uint32_t *sse";
     add_proto qw/uint32_t/, "aom_sub_pixel_avg_variance${w}x${h}", "const uint8_t *src_ptr, int source_stride, int xoffset, int  yoffset, const uint8_t *ref_ptr, int ref_stride, uint32_t *sse, const uint8_t *second_pred";
   }
-  specialize qw/aom_variance128x128   sse2 avx2 neon neon_dotprod/;
-  specialize qw/aom_variance128x64    sse2 avx2 neon neon_dotprod/;
-  specialize qw/aom_variance64x128    sse2 avx2 neon neon_dotprod/;
-  specialize qw/aom_variance64x64     sse2 avx2 neon neon_dotprod/;
-  specialize qw/aom_variance64x32     sse2 avx2 neon neon_dotprod/;
-  specialize qw/aom_variance32x64     sse2 avx2 neon neon_dotprod/;
-  specialize qw/aom_variance32x32     sse2 avx2 neon neon_dotprod/;
-  specialize qw/aom_variance32x16     sse2 avx2 neon neon_dotprod/;
-  specialize qw/aom_variance16x32     sse2 avx2 neon neon_dotprod/;
-  specialize qw/aom_variance16x16     sse2 avx2 neon neon_dotprod/;
+  specialize qw/aom_variance128x128   sse2 avx2 neon neon_dotprod rvv/;
+  specialize qw/aom_variance128x64    sse2 avx2 neon neon_dotprod rvv/;
+  specialize qw/aom_variance64x128    sse2 avx2 neon neon_dotprod rvv/;
+  specialize qw/aom_variance64x64     sse2 avx2 neon neon_dotprod rvv/;
+  specialize qw/aom_variance64x32     sse2 avx2 neon neon_dotprod rvv/;
+  specialize qw/aom_variance32x64     sse2 avx2 neon neon_dotprod rvv/;
+  specialize qw/aom_variance32x32     sse2 avx2 neon neon_dotprod rvv/;
+  specialize qw/aom_variance32x16     sse2 avx2 neon neon_dotprod rvv/;
+  specialize qw/aom_variance16x32     sse2 avx2 neon neon_dotprod rvv/;
+  specialize qw/aom_variance16x16     sse2 avx2 neon neon_dotprod rvv/;
   specialize qw/aom_variance16x8      sse2 avx2 neon neon_dotprod/;
   specialize qw/aom_variance8x16      sse2      neon neon_dotprod/;
   specialize qw/aom_variance8x8       sse2      neon neon_dotprod/;
@@ -1527,16 +1527,16 @@ if (aom_config("CONFIG_AV1_ENCODER") eq "yes") {
   specialize qw/aom_variance4x4       sse2      neon/;
 
   if (aom_config("CONFIG_HIGHWAY") eq "yes") {
-    specialize qw/aom_variance128x128 avx512/;
-    specialize qw/aom_variance128x64  avx512/;
-    specialize qw/aom_variance64x128  avx512/;
-    specialize qw/aom_variance64x64   avx512/;
-    specialize qw/aom_variance64x32   avx512/;
-    specialize qw/aom_variance32x64   avx512/;
-    specialize qw/aom_variance32x32   avx512/;
-    specialize qw/aom_variance32x16   avx512/;
-    specialize qw/aom_variance16x32   avx512/;
-    specialize qw/aom_variance16x16   avx512/;
+    specialize qw/aom_variance128x128 avx512 rvv/;
+    specialize qw/aom_variance128x64  avx512 rvv/;
+    specialize qw/aom_variance64x128  avx512 rvv/;
+    specialize qw/aom_variance64x64   avx512 rvv/;
+    specialize qw/aom_variance64x32   avx512 rvv/;
+    specialize qw/aom_variance32x64   avx512 rvv/;
+    specialize qw/aom_variance32x32   avx512 rvv/;
+    specialize qw/aom_variance32x16   avx512 rvv/;
+    specialize qw/aom_variance16x32   avx512 rvv/;
+    specialize qw/aom_variance16x16   avx512 rvv/;
     specialize qw/aom_variance16x8    avx512/;
   }
 
@@ -1601,14 +1601,14 @@ if (aom_config("CONFIG_AV1_ENCODER") eq "yes") {
     specialize qw/aom_variance16x4  neon neon_dotprod sse2 avx2/;
     specialize qw/aom_variance8x32  neon neon_dotprod sse2/;
     specialize qw/aom_variance32x8  neon neon_dotprod sse2 avx2/;
-    specialize qw/aom_variance16x64 neon neon_dotprod sse2 avx2/;
-    specialize qw/aom_variance64x16 neon neon_dotprod sse2 avx2/;
+    specialize qw/aom_variance16x64 neon neon_dotprod sse2 avx2 rvv/;
+    specialize qw/aom_variance64x16 neon neon_dotprod sse2 avx2 rvv/;
 
     if (aom_config("CONFIG_HIGHWAY") eq "yes") {
       specialize qw/aom_variance16x4  avx512/;
       specialize qw/aom_variance32x8  avx512/;
-      specialize qw/aom_variance16x64 avx512/;
-      specialize qw/aom_variance64x16 avx512/;
+      specialize qw/aom_variance16x64 avx512 rvv/;
+      specialize qw/aom_variance64x16 avx512 rvv/;
     }
 
     specialize qw/aom_sub_pixel_variance4x16 neon neon_dotprod/, "$ssse3_asm";
